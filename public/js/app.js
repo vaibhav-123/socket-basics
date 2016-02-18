@@ -3,12 +3,22 @@ $(document).ready(function() {
 
     var name = getQueryVariable('name') || 'Anonymous';
     var room = getQueryVariable('room');
-    console.log(name + ' Wants to join ' + room );   
+
+    console.log(name + ' Wants to join ' + room );  
+
+    $('.room-title').text(room); 
 
 	var socket = io();
 
+	// connetion to server
 	socket.on('connect', function(){
 		console.log('Connected to server!!!!!!!!');
+
+		// joinRoom event 
+		socket.emit('joinRoom', {
+			name: name,
+			room: room
+		});
 	});
 
 	socket.on('message', function(message){

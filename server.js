@@ -7,8 +7,19 @@ var io = require('socket.io')(http);
 
 app.use(express.static(__dirname + '/public'));
 
-io.on('connection', function(){
-	console.log('User connected via socket.io!!!!');
+io.on('connection', function(socket){
+	console.log('New user connected via socket.io!!!!');
+
+	socket.on('message', function(message){
+		console.log('Message received :'+ message.text);
+		
+		// send the message to all users except sender
+		socket.broadcast.emit('message', message);
+	});
+
+	socket.emit('message', {
+		text: 'Wellcome to chat application!!!!' 
+	});
 });
 
 http.listen(PORT, function(){

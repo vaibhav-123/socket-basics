@@ -4,6 +4,8 @@ var PORT = process.env.PORT || 3000;
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var moment = require('moment');
+var now = moment();
 
 app.use(express.static(__dirname + '/public'));
 
@@ -13,6 +15,7 @@ io.on('connection', function(socket){
 	socket.on('message', function(message){
 		console.log('Message received :'+ message.text);
 		
+		message.timeStamp = now.format('x');
 		// send the message to all users including sender
 		io.emit('message', message);
 		// send the message to all users except sender
@@ -20,7 +23,8 @@ io.on('connection', function(socket){
 	});
 
 	socket.emit('message', {
-		text: 'Wellcome to chat application!!!!' 
+		text: 'Wellcome to chat application!!!!',
+		timeStamp: now.format('x') 
 	});
 });
 

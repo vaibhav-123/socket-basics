@@ -8,7 +8,9 @@ $(document).ready(function() {
 	});
 
 	socket.on('message', function(message){
-		$(".messages").append('<p>' + message.text + '</p>');
+
+		var timeStampMoment = moment().utc(message.timeStamp);
+		$(".messages").append('<p>' + timeStampMoment.format('h:mm:ssa') + ' : ' + message.text + '</p>');
 	});
 
 	// Handle submitting of new message

@@ -14,6 +14,21 @@ var clientInfo = {};
 io.on('connection', function(socket){
 	console.log('New user connected via socket.io!!!!');
 
+	socket.on('disconnect', function(){
+		var userData = clientInfo[socket.id];
+
+		if(typeof userData !== 'undefined') {
+			socket.leave(userData.room);
+			io.to(userData.room).emit('message', {
+				name: 'System',
+				text: userData.name + ' has left!!',
+				timeStamp: now.format('x')	
+			});
+
+			delete clientInfo[socket.id]
+		}
+	});
+
 	socket.on('joinRoom', function(req){
          
         clientInfo[socket.id] = req;  
@@ -22,7 +37,7 @@ io.on('connection', function(socket){
 		// send to every socket except current socket
 		socket.broadcast.to(req.room).emit('message', {
 			name: 'System',
-			text: req.name + 'has joined!!',
+			text: req.name + ' has joined!!',
 			timeStamp: now.format('x') 
 		});
 	});

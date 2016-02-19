@@ -25,7 +25,7 @@ $(document).ready(function() {
 
 		var timeStampMoment = moment().utc(message.timeStamp);
 		
-		$(".messages").append('<p>' + message.name + ' ' + timeStampMoment.format('h:mm:ssa') + '</p>');
+		$(".messages").append('<p><strong>' + message.name + ' ' + timeStampMoment.format('h:mm:ssa') + '</strong></p>');
 		$(".messages").append('<p>' + message.text + '</p>');
 	});
 
